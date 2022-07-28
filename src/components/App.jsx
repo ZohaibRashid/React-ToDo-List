@@ -4,7 +4,6 @@ import ToDoItem from "./ToDoItem";
 function App() {
   const [newItem, setNewItem] = useState("");
   const [listItems, setListItems] = useState([]);
-
   function handleChange(event) {
     const val = event.target.value;
     setNewItem(val);
@@ -15,6 +14,14 @@ function App() {
       return [...prevValue, newItem];
     });
     setNewItem("");
+  }
+
+  function deleteItem(id) {
+    setListItems((prevItems) => {
+      return prevItems.filter(function (item, index) {
+        return index !== id;
+      });
+    });
   }
 
   return (
@@ -30,13 +37,19 @@ function App() {
       </div>
       <div>
         <ul>
-          {listItems.map(function (item) {
-            return <ToDoItem newItem={item} />;
+          {listItems.map(function (item, index) {
+            return (
+              <ToDoItem
+                newItem={item}
+                id={index}
+                key={index}
+                onCheck={deleteItem}
+              />
+            );
           })}
         </ul>
       </div>
     </div>
   );
 }
-
 export default App;
